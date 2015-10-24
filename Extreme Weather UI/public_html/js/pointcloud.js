@@ -5,7 +5,7 @@ var createPointCloud = function (scene) {
     scene.add(group);
 
     var convert = function (coordinate) {
-        var radius = 15; //radius of our earth model
+        var radius = 15 + 0.2; //radius of our earth model is 15
 
         var phi = (90 - coordinate.x) * (Math.PI / 180);
         var theta = (coordinate.y + 180) * (Math.PI / 180);

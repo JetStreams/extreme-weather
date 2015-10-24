@@ -6,6 +6,18 @@ var EW = {
   rotationMultiplier: 1
 };
 
+function webglAvailable() {
+  try {
+    var canvas = document.createElement( 'canvas' );
+    return !!( window.WebGLRenderingContext && (
+      canvas.getContext( 'webgl' ) ||
+        canvas.getContext( 'experimental-webgl' ) )
+             );
+  } catch ( e ) {
+    return false;
+  }
+}
+
 function initRenderer() {
 
     var renderer;
@@ -25,9 +37,12 @@ function initRenderer() {
 
     scene = new THREE.Scene();
 
-    // create a WebGL renderer, camera
-    // and a scene
-    renderer = new THREE.WebGLRenderer();
+    // create a renderer, camera and a scene
+    if ( webglAvailable() ) {
+      renderer = new THREE.WebGLRenderer();
+    } else {
+      renderer = new THREE.CanvasRenderer();
+    }
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 1.0);
     renderer.shadowMap.enabled = true;

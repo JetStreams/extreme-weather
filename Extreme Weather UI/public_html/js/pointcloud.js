@@ -18,23 +18,29 @@ var createPointCloud = function (scene) {
     };
 
     $.getJSON("res/data/sample_082010.json", function (data) {
-        var col = 0xff0000;
-        var material = new THREE.LineBasicMaterial({ color: col });
+        var col = 0xFFFFFF;
+        var material = new THREE.MeshBasicMaterial({ color: col });
+        material.blending = THREE.AdditiveBlending;
         
         for (var i in data) {
             var c = data[i];
             var a1 = c[0];
             var a2 = c[1];
-            var dir = c[2];
-            var mag = (c[3] - 18) / 5;
+            var dir1 = c[2];
+            var dir2 = c[2] - Math.PI / 2;
+            var dir3 = c[2] + Math.PI / 2;
+            var mag = (c[3] - 15) / 7;
 
-            var coor1 = convertFromSpherical(a1, a2);
-            var coor2 = convertFromSpherical(a1 + 2 * Math.cos(dir), a2 + 2 * Math.sin(dir));
+            var c1 = convertFromSpherical(a1 + mag * Math.cos(dir1), a2 + mag * Math.sin(dir1));
+            var c2 = convertFromSpherical(a1 + mag * Math.cos(dir2) * 0.1, a2 + mag * Math.sin(dir2) * 0.1);
+            var c3 = convertFromSpherical(a1 + mag * Math.cos(dir3) * 0.1, a2 + mag * Math.sin(dir3) * 0.1);
             var geometry = new THREE.Geometry();
-            geometry.vertices.push(coor1, coor2);
-            var line = new THREE.Line( geometry, material );
+            geometry.vertices.push(c1, c2, c3); 
+            geometry.faces.push(new THREE.Face3(0, 2, 1));
 
-            group.add(line);
+            var mesh = new THREE.Mesh( geometry, material );
+
+            group.add(mesh);
         }
     });
 

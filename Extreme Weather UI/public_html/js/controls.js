@@ -1,3 +1,7 @@
 var initControls = function () {
-    $("#slider").slider();
+  $('.dg').hover(function() {
+    EW.cameraControl.enabled = false;
+  }, function() {
+    EW.cameraControl.enabled = true;
+  });
 };

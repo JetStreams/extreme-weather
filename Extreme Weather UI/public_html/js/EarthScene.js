@@ -1,4 +1,5 @@
 var createGlobe = function (scene) {
+    var group = new THREE.Group();
 
     var loadTexture = function (path) {
         var texloader = new THREE.TextureLoader();
@@ -23,8 +24,7 @@ var createGlobe = function (scene) {
     var sphereGeometry = new THREE.SphereGeometry(15, 60, 60); // 6371km = 15 units
     var sphereMaterial = createEarthMaterial();
     var earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    earthMesh.name = 'earth';
-    scene.add(earthMesh);
+    group.add(earthMesh);
 
     //-------------------------------------------------------------------------
     var cloudGeometry = new
@@ -34,8 +34,9 @@ var createGlobe = function (scene) {
     var cloudMaterial = createMaterial("res/textures/planets/fair_clouds_4k.png");
     cloudMaterial.transparent = true;
     var cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
-    cloudMesh.name = 'clouds';
-    scene.add(cloudMesh);
+    group.add(cloudMesh);
+
+    scene.add(group);
 
     var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.x = 400;
@@ -49,5 +50,7 @@ var createGlobe = function (scene) {
     
     var axis = new THREE.AxisHelper(20);
     scene.add(axis);
+    
+    return group;
 };
 

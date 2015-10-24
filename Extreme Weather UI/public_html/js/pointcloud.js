@@ -10,9 +10,9 @@ var createPointCloud = function (scene) {
         var phi = (90 - a2) * (Math.PI / 180);
         var theta = (a1 + 180) * (Math.PI / 180);
 
-        var x = -((radius) * Math.sin(phi) * Math.cos(theta));
-        var z = ((radius) * Math.sin(phi) * Math.sin(theta));
-        var y = ((radius) * Math.cos(phi));
+        var x = -radius * Math.sin(phi) * Math.cos(theta);
+        var z = radius * Math.sin(phi) * Math.sin(theta);
+        var y = radius * Math.cos(phi);
 
         return new THREE.Vector3(x, y, z);
     };
@@ -24,13 +24,14 @@ var createPointCloud = function (scene) {
         
         for (var i in data) {
             var c = data[i];
-            var a1 = c[0];
+            var a1 = c[0]; // sample latitude and longitude
             var a2 = c[1];
-            var dir1 = c[2];
+            var dir1 = c[2]; // wind direction
             var dir2 = c[2] - Math.PI / 2;
             var dir3 = c[2] + Math.PI / 2;
-            var mag = (c[3] - 15) / 7;
+            var mag = (c[3] - 15) / 7; // wind magnitude
 
+            // create triangle
             var c1 = convertFromSpherical(a1 + mag * Math.cos(dir1), a2 + mag * Math.sin(dir1));
             var c2 = convertFromSpherical(a1 + mag * Math.cos(dir2) * 0.1, a2 + mag * Math.sin(dir2) * 0.1);
             var c3 = convertFromSpherical(a1 + mag * Math.cos(dir3) * 0.1, a2 + mag * Math.sin(dir3) * 0.1);

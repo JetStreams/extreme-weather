@@ -48,9 +48,6 @@ var createGlobe = function (scene) {
     var ambientLight = new THREE.AmbientLight(0x111111);
     scene.add(ambientLight);
     
-    var axis = new THREE.AxisHelper(20);
-    scene.add(axis);
-    
     return group;
 };
 

@@ -7,7 +7,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5.1/dat.gui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r14/Stats.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script src="js/libs/tween.js"></script>
         <script src="js/libs/OrbitControls.js"></script>
         <script src="js/libs/EffectComposer.js"></script>
@@ -24,6 +23,10 @@
     <body>
         <div id="container"></div>
 
+        <iframe id="player"
+                src="https://www.youtube.com/v/03rALNASWJw?enablejsapi=1;autoplay=1"
+                style="display: none"></iframe>
+
         <script type="text/javascript">
             $(function () {
                 initRenderer();
@@ -31,11 +34,6 @@
             });
         </script>
 
-        <iframe id="player" width="640" height="390"
-                src="https://www.youtube.com/embed/UDVtMYqUAyw?enablejsapi=1;autoplay=1"
-                frameborder="0" style="display: none"></iframe>
-
-        <link type="text/css" rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css"/>
         <link type="text/css" rel="stylesheet" href="css/style.css"/>
     </body>
 </html>

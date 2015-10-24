@@ -15,4 +15,11 @@ body {
     text-align: left;
     z-index: 100;
     display: inline;
+    
+}
+
+.ctrl .info {
+    border-radius: 5px;
+    background: rgba(95,158,160,0.3);
+    padding: 3px;
 }

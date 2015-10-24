@@ -1,7 +1,9 @@
 var EW = {
   cameraControl: null,
   meshEarth: null,
-  meshPoints: null
+  meshPoints: null,
+  rotationEnabled: true,
+  rotationMultiplier: 1
 };
 
 function initRenderer() {
@@ -93,10 +95,17 @@ function initRenderer() {
         stats.update();
         EW.cameraControl.update();
 
-        var rotSpeed = control.rotationSpeed;
+        // Slow down or speed up rotation
+        if(EW.rotationEnabled) {
+          EW.rotationMultiplier = Math.min(EW.rotationMultiplier + 0.05, 1);          
+        } else {
+          EW.rotationMultiplier = Math.max(EW.rotationMultiplier - 0.05, 0);
+        }
+        var rotSpeed = control.rotationSpeed * EW.rotationMultiplier;
 
         EW.meshEarth.rotation.y += rotSpeed;
         EW.meshPoints.rotation.y += rotSpeed;
+
 
         // and render the scene, renderer shouldn't autoclear, we let the composer steps do that themselves
         // rendering is now done through the composer, which executes the render steps

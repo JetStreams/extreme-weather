@@ -1,0 +1,7 @@
+{
+  "name": "extreme-weather-ui",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "ws"
+  }
+}

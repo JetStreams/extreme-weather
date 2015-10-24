@@ -1,26 +1,35 @@
 var createPointCloud = function (scene) {
-    
+    //the group to add points
+    var group = new THREE.Group();
+    group.name = 'points';
+    scene.add(group);
 
     var convert = function (coordinate) {
         var r = 15; //radius of our earth model
 
-        var a = coordinate.a;
-        var b = coordinate.b;
+        var a = coordinate.x/180 * Math.PI;
+        var b = coordinate.y/180 * Math.PI;
 
-        var x = r * Math.sin(a) * Math.cos(b);
-        var y = r * Math.sin(a) * Math.sin(b);
-        var z = r * Math.cos(a);
+        var x = r * Math.cos(a) * Math.cos(b);
+        var y = r * Math.cos(a) * Math.sin(b);
+        var z = r * Math.sin(a);
         return {'x': x, 'y': y, 'z': z};
     };
 
-    var group = new THREE.Group();
+    $.getJSON("res/data/sample_082010.json", function (data) {
+        for (var i = 0, len = data.length; i < len; i++) {
+            var c = data[i];
+            
+            var geometry = new THREE.SphereGeometry(0.1, 10, 10);
+            var material = new THREE.MeshBasicMaterial({color: 0xff0000});
 
-    for (var i = 0; i < 200; i++) {
-        var geometry = new THREE.SphereGeometry(0.1, 10, 10);
-        var material = new THREE.MeshBasicMaterial({color: 0xff0000});
+            var coor = convert({'x': c[0], 'y': c[1]});
+            geometry.translate(coor.x, coor.y, coor.z);
 
-        var a = Math.random() * Math.PI;
-        var b = Math.random() * Math.PI * 2;
+            var sphere = new THREE.Mesh(geometry, material);
+            group.add(sphere);
+        }
+    });
 
         var coor = convert({'x': a, 'y': b});
         geometry.translate(coor.x, coor.y, coor.z);

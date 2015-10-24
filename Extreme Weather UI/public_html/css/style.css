@@ -1,16 +1,9 @@
-body {
+html, body {
     /* set margin to 0 and overflow to hidden, to go fullscreen */
     margin: 0;
+    padding: 0;
     overflow: hidden;
 }
-
-#slider {
-    color: #fff;
-    position: absolute;
-    top: 10px;
-    left: 20px;
-    width: 20%;
-    text-align: left;
-    z-index: 100;
-    display: inline;
+canvas {
+  display: block;
 }

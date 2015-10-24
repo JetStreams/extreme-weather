@@ -1,14 +1,14 @@
 var EW = {
   camera: null,
   cameraControl: null,
+  cameraId: 0,
   meshEarth: null,
   meshPoints: null,
   renderer: null,
   rotationEnabled: true,
   rotationMultiplier: 1
 };
-
-function webglAvailable() {
+EW.webglAvailable = function() {
   try {
     var canvas = document.createElement( 'canvas' );
     return !!( window.WebGLRenderingContext && (
@@ -18,13 +18,25 @@ function webglAvailable() {
   } catch ( e ) {
     return false;
   }
-}
-    
-function onResize() {
+};
+EW.onResize = function() {
   EW.camera.aspect = window.innerWidth / window.innerHeight;
   EW.camera.updateProjectionMatrix();
   EW.renderer.setSize(window.innerWidth, window.innerHeight);
-};
+}
+EW.switchCamera = function() {
+  var pos = [
+    { x: 15, y: 35, z:0 },
+    { x: 15, y: 17, z:0 },
+    { x: 35, y: 35, z:0 }
+  ];
+
+  new TWEEN
+    .Tween(EW.camera.position)
+    .to(pos[EW.cameraId++ % pos.length], 5000)
+    .easing(TWEEN.Easing.Sinusoidal.InOut)
+    .start(); 
+} 
 
 function initRenderer() {
 
@@ -45,7 +57,7 @@ function initRenderer() {
     scene = new THREE.Scene();
 
     // create a renderer, camera and a scene
-    if ( webglAvailable() ) {
+    if ( EW.webglAvailable() ) {
       EW.renderer = new THREE.WebGLRenderer();
     } else {
       EW.renderer = new THREE.CanvasRenderer();
@@ -63,10 +75,11 @@ function initRenderer() {
                     VIEW_ANGLE,
                     ASPECT, NEAR, FAR);
     EW.camera.position.x = 35;
-    EW.camera.position.y = 0;
-    EW.camera.position.z = 23;
+    EW.camera.position.y = 35;
+    EW.camera.position.z = 0;
     EW.camera.lookAt(scene.position);
     EW.cameraControl = new THREE.OrbitControls(EW.camera);
+    EW.cameraControl.target.z = 10;
 
     // add the camera to the scene
     scene.add(EW.camera);
@@ -140,5 +153,5 @@ function initRenderer() {
 
     addStatsObject();
     render();
-    window.addEventListener('resize', onResize, false);
+    window.addEventListener('resize', EW.onResize, false);
 }

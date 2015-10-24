@@ -6,10 +6,17 @@ var initControls = function () {
     EW.cameraControl.enabled = true;
   });
 
-  // Toggle rotation when pressing the space bar
   $('body').keydown(function(ev) {
-    if(ev.which == 32) {
-      EW.rotationEnabled = !EW.rotationEnabled;
+    switch(ev.which) {
+      // space bar toggles camera rotation
+      case 32:
+        EW.rotationEnabled = !EW.rotationEnabled;
+        break;
+
+      // enter key changes camera
+      case 13:
+        EW.switchCamera();
+        break;
     }
   });
 };

@@ -4,11 +4,11 @@ var createPointCloud = function (scene) {
     group.name = 'points';
     scene.add(group);
 
-    var convert = function (coordinate) {
+    var convertFromSpherical = function (a1, a2) {
         var radius = 15 + 0.2; //radius of our earth model is 15
 
-        var phi = (90 - coordinate.y) * (Math.PI / 180);
-        var theta = (coordinate.x + 180) * (Math.PI / 180);
+        var phi = (90 - a2) * (Math.PI / 180);
+        var theta = (a1 + 180) * (Math.PI / 180);
 
         var x = -((radius) * Math.sin(phi) * Math.cos(theta));
         var z = ((radius) * Math.sin(phi) * Math.sin(theta));
@@ -18,19 +18,26 @@ var createPointCloud = function (scene) {
     };
 
     $.getJSON("res/data/sample_082010.json", function (data) {
-        for (var i = 0, len = data.length; i < len; i++) {
+        var col = 0xff0000;
+        var material = new THREE.LineBasicMaterial({ color: col });
+        
+        for (var i in data) {
             var c = data[i];
+            var a1 = c[0];
+            var a2 = c[1];
+            var dir = c[2];
+            var mag = (c[3] - 18) / 5;
 
-            var geometry = new THREE.SphereGeometry(0.1, 10, 10);
+            var coor1 = convertFromSpherical(a1, a2);
+            var coor2 = convertFromSpherical(a1 + 2 * Math.cos(dir), a2 + 2 * Math.sin(dir));
+            var geometry = new THREE.Geometry();
+            geometry.vertices.push(
+              new THREE.Vector3( coor1.x, coor1.y, coor1.z ),
+              new THREE.Vector3( coor2.x, coor2.y, coor2.z )
+            );
+            var line = new THREE.Line( geometry, material );
 
-            var col = 0xff0000;
-            var material = new THREE.MeshBasicMaterial({color: col});
-
-            var coor = convert({'x': c[0], 'y': c[1]});
-            geometry.translate(coor.x, coor.y, coor.z);
-
-            var sphere = new THREE.Mesh(geometry, material);
-            group.add(sphere);
+            group.add(line);
         }
     });
 

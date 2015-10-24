@@ -1,7 +1,9 @@
 var EW = {
+  camera: null,
   cameraControl: null,
   meshEarth: null,
   meshPoints: null,
+  renderer: null,
   rotationEnabled: true,
   rotationMultiplier: 1
 };
@@ -17,10 +19,15 @@ function webglAvailable() {
     return false;
   }
 }
+    
+function onResize() {
+  EW.camera.aspect = window.innerWidth / window.innerHeight;
+  EW.camera.updateProjectionMatrix();
+  EW.renderer.setSize(window.innerWidth, window.innerHeight);
+};
 
 function initRenderer() {
 
-    var renderer;
     var scene;
     var camera;
     var control;
@@ -39,31 +46,30 @@ function initRenderer() {
 
     // create a renderer, camera and a scene
     if ( webglAvailable() ) {
-      renderer = new THREE.WebGLRenderer();
+      EW.renderer = new THREE.WebGLRenderer();
     } else {
-      renderer = new THREE.CanvasRenderer();
+      EW.renderer = new THREE.CanvasRenderer();
     }
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 1.0);
-    renderer.shadowMap.enabled = true;
+    EW.renderer.setSize(window.innerWidth, window.innerHeight);
+    EW.renderer.setClearColor(0x000000, 1.0);
+    EW.renderer.shadowMap.enabled = true;
 
     // attach the render-supplied DOM element
     // get the DOM element to attach to
     // - assume we've got jQuery to hand
-    $('#container').append(renderer.domElement);
+    $('#container').append(EW.renderer.domElement);
 
-    camera =
-            new THREE.PerspectiveCamera(
+    EW.camera = new THREE.PerspectiveCamera(
                     VIEW_ANGLE,
                     ASPECT, NEAR, FAR);
-    camera.position.x = 35;
-    camera.position.y = 0;
-    camera.position.z = 23;
-    camera.lookAt(scene.position);
-    EW.cameraControl = new THREE.OrbitControls(camera);
+    EW.camera.position.x = 35;
+    EW.camera.position.y = 0;
+    EW.camera.position.z = 23;
+    EW.camera.lookAt(scene.position);
+    EW.cameraControl = new THREE.OrbitControls(EW.camera);
 
     // add the camera to the scene
-    scene.add(camera);
+    scene.add(EW.camera);
     //==============================================================
 
     EW.meshEarth = createGlobe(scene);
@@ -74,9 +80,9 @@ function initRenderer() {
 
     //==============================================================
 
-    var renderPass = new THREE.RenderPass(scene, camera);
+    var renderPass = new THREE.RenderPass(scene, EW.camera);
     renderPass.clear = false;
-    composer = createComposer(renderer, renderPass);
+    composer = createComposer(EW.renderer, renderPass);
 
     //==============================================================
     var addStatsObject = function () {
@@ -106,7 +112,7 @@ function initRenderer() {
 
     //==============================================================
     // draw!
-    var render = function () {
+    var render = function (time) {
         stats.update();
         EW.cameraControl.update();
 
@@ -124,17 +130,13 @@ function initRenderer() {
 
         // and render the scene, renderer shouldn't autoclear, we let the composer steps do that themselves
         // rendering is now done through the composer, which executes the render steps
-        renderer.autoClear = false;
+        EW.renderer.autoClear = false;
         composer.render();
 
         requestAnimationFrame(render);
+        TWEEN.update(time);
     };
 
-    var onResize = function () {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    };
 
     addStatsObject();
     render();

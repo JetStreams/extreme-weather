@@ -20,7 +20,7 @@ var createGlobe = function (scene) {
         return material;
     };
 
-    var sphereGeometry = new THREE.SphereGeometry(15, 60, 60);
+    var sphereGeometry = new THREE.SphereGeometry(15, 60, 60); // 6371km = 15 units
     var sphereMaterial = createEarthMaterial();
     var earthMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
     earthMesh.name = 'earth';

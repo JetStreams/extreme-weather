@@ -48,6 +48,10 @@ function initRenderer() {
 
     //==============================================================
 
+    createPointCloud(scene);
+
+    //==============================================================
+
     var renderPass = new THREE.RenderPass(scene, camera);
     renderPass.clear = false;
     composer = createComposer(renderer, renderPass);
@@ -83,9 +87,11 @@ function initRenderer() {
         var rotSpeed = control.rotationSpeed;
         var earth = scene.getObjectByName('earth');
         var clouds = scene.getObjectByName('clouds');
+        var points = scene.getObjectByName('points');
 
         earth.rotation.y += rotSpeed;
         clouds.rotation.y += rotSpeed;
+        points.rotation.y += rotSpeed;
 
         // and render the scene, renderer shouldn't autoclear, we let the composer steps do that themselves
         // rendering is now done through the composer, which executes the render steps

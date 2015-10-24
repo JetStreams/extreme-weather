@@ -1,11 +1,11 @@
 var createPointCloud = function (scene) {
-    
+
 
     var convert = function (coordinate) {
         var r = 15; //radius of our earth model
 
-        var a = coordinate.a;
-        var b = coordinate.b;
+        var a = coordinate.x;
+        var b = coordinate.y;
 
         var x = r * Math.sin(a) * Math.cos(b);
         var y = r * Math.sin(a) * Math.sin(b);
@@ -23,6 +23,7 @@ var createPointCloud = function (scene) {
         var b = Math.random() * Math.PI * 2;
 
         var coor = convert({'x': a, 'y': b});
+        console.log(coor);
         geometry.translate(coor.x, coor.y, coor.z);
 
         var sphere = new THREE.Mesh(geometry, material);

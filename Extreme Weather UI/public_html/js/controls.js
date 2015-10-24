@@ -12,4 +12,8 @@ var initControls = function () {
       EW.rotationEnabled = !EW.rotationEnabled;
     }
   });
+  
+  $('#maximize').click(function(ev){
+      $(document).fullScreen(true)
+  });
 };

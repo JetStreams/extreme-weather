@@ -7,8 +7,8 @@ var createPointCloud = function (scene) {
     var convert = function (coordinate) {
         var radius = 15; //radius of our earth model
 
-        var phi = (90 - coordinate.x) * (Math.PI / 180);
-        var theta = (coordinate.y + 180) * (Math.PI / 180);
+        var phi = (90 - coordinate.y) * (Math.PI / 180);
+        var theta = (coordinate.x + 180) * (Math.PI / 180);
 
         var x = -((radius) * Math.sin(phi) * Math.cos(theta));
         var z = ((radius) * Math.sin(phi) * Math.sin(theta));

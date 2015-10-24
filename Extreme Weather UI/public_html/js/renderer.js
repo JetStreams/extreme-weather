@@ -1,8 +1,22 @@
 var EW = {
   cameraControl: null,
   meshEarth: null,
-  meshPoints: null
+  meshPoints: null,
+  rotationEnabled: true,
+  rotationMultiplier: 1
 };
+
+function webglAvailable() {
+  try {
+    var canvas = document.createElement( 'canvas' );
+    return !!( window.WebGLRenderingContext && (
+      canvas.getContext( 'webgl' ) ||
+        canvas.getContext( 'experimental-webgl' ) )
+             );
+  } catch ( e ) {
+    return false;
+  }
+}
 
 function initRenderer() {
 
@@ -23,9 +37,12 @@ function initRenderer() {
 
     scene = new THREE.Scene();
 
-    // create a WebGL renderer, camera
-    // and a scene
-    renderer = new THREE.WebGLRenderer();
+    // create a renderer, camera and a scene
+    if ( webglAvailable() ) {
+      renderer = new THREE.WebGLRenderer();
+    } else {
+      renderer = new THREE.CanvasRenderer();
+    }
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 1.0);
     renderer.shadowMap.enabled = true;
@@ -93,10 +110,17 @@ function initRenderer() {
         stats.update();
         EW.cameraControl.update();
 
-        var rotSpeed = control.rotationSpeed;
+        // Slow down or speed up rotation
+        if(EW.rotationEnabled) {
+          EW.rotationMultiplier = Math.min(EW.rotationMultiplier + 0.05, 1);          
+        } else {
+          EW.rotationMultiplier = Math.max(EW.rotationMultiplier - 0.05, 0);
+        }
+        var rotSpeed = control.rotationSpeed * EW.rotationMultiplier;
 
         EW.meshEarth.rotation.y += rotSpeed;
         EW.meshPoints.rotation.y += rotSpeed;
+
 
         // and render the scene, renderer shouldn't autoclear, we let the composer steps do that themselves
         // rendering is now done through the composer, which executes the render steps

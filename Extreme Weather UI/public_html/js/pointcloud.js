@@ -34,13 +34,5 @@ var createPointCloud = function (scene) {
         }
     });
 
-        var coor = convert({'x': a, 'y': b});
-        geometry.translate(coor.x, coor.y, coor.z);
-
-        var sphere = new THREE.Mesh(geometry, material);
-        group.add(sphere);
-    }
-    scene.add(group);
-
     return group;
 };

@@ -28,6 +28,7 @@ var createPointCloud = function (scene) {
         var sphere = new THREE.Mesh(geometry, material);
         group.add(sphere);
     }
-    group.name = 'points';
     scene.add(group);
+
+    return group;
 };

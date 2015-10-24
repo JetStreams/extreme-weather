@@ -1,3 +1,9 @@
+var EW = {
+  cameraControl: null,
+  meshEarth: null,
+  meshPoints: null
+};
+
 function initRenderer() {
 
     var renderer;
@@ -5,7 +11,6 @@ function initRenderer() {
     var camera;
     var control;
     var stats;
-    var cameraControl;
 
     // background stuff
     var composer;
@@ -38,17 +43,17 @@ function initRenderer() {
     camera.position.y = 0;
     camera.position.z = 23;
     camera.lookAt(scene.position);
-    cameraControl = new THREE.OrbitControls(camera);
+    EW.cameraControl = new THREE.OrbitControls(camera);
 
     // add the camera to the scene
     scene.add(camera);
     //==============================================================
 
-    createGlobe(scene);
+    EW.meshEarth = createGlobe(scene);
 
     //==============================================================
 
-    createPointCloud(scene);
+    EW.meshPoints = createPointCloud(scene);
 
     //==============================================================
 
@@ -68,30 +73,30 @@ function initRenderer() {
         document.body.appendChild(stats.domElement);
     };
 
+    //==============================================================
     var addControlGui = function (controlObject) {
         var gui = new dat.GUI();
-        gui.add(controlObject, 'rotationSpeed', -0.1, 0.1);
+        gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
+        gui.add(controlObject, 'time', -0.1, 0.1);
     };
 
     // setup the control object for the control gui
     control = new function () {
         this.rotationSpeed = 0.001;
+        this.time = 0;
     };
     addControlGui(control);
 
+    //==============================================================
     // draw!
     var render = function () {
         stats.update();
-        cameraControl.update();
+        EW.cameraControl.update();
 
         var rotSpeed = control.rotationSpeed;
-        var earth = scene.getObjectByName('earth');
-        var clouds = scene.getObjectByName('clouds');
-        var points = scene.getObjectByName('points');
 
-        earth.rotation.y += rotSpeed;
-        clouds.rotation.y += rotSpeed;
-        points.rotation.y += rotSpeed;
+        EW.meshEarth.rotation.y += rotSpeed;
+        EW.meshPoints.rotation.y += rotSpeed;
 
         // and render the scene, renderer shouldn't autoclear, we let the composer steps do that themselves
         // rendering is now done through the composer, which executes the render steps

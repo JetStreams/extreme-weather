@@ -5,23 +5,26 @@ var createPointCloud = function (scene) {
     scene.add(group);
 
     var convert = function (coordinate) {
-        var r = 15; //radius of our earth model
+        var radius = 15; //radius of our earth model
 
-        var a = coordinate.x/180 * Math.PI;
-        var b = coordinate.y/180 * Math.PI;
+        var phi = (90 - coordinate.x) * (Math.PI / 180);
+        var theta = (coordinate.y + 180) * (Math.PI / 180);
 
-        var x = r * Math.cos(a) * Math.cos(b);
-        var y = r * Math.cos(a) * Math.sin(b);
-        var z = r * Math.sin(a);
+        var x = -((radius) * Math.sin(phi) * Math.cos(theta));
+        var z = ((radius) * Math.sin(phi) * Math.sin(theta));
+        var y = ((radius) * Math.cos(phi));
+
         return {'x': x, 'y': y, 'z': z};
     };
 
     $.getJSON("res/data/sample_082010.json", function (data) {
         for (var i = 0, len = data.length; i < len; i++) {
             var c = data[i];
-            
+
             var geometry = new THREE.SphereGeometry(0.1, 10, 10);
-            var material = new THREE.MeshBasicMaterial({color: 0xff0000});
+
+            var col = 0xff0000;
+            var material = new THREE.MeshBasicMaterial({color: col});
 
             var coor = convert({'x': c[0], 'y': c[1]});
             geometry.translate(coor.x, coor.y, coor.z);

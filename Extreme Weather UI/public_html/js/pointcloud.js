@@ -14,7 +14,7 @@ var createPointCloud = function (scene) {
         var z = ((radius) * Math.sin(phi) * Math.sin(theta));
         var y = ((radius) * Math.cos(phi));
 
-        return {'x': x, 'y': y, 'z': z};
+        return new THREE.Vector3(x, y, z);
     };
 
     $.getJSON("res/data/sample_082010.json", function (data) {
@@ -31,10 +31,7 @@ var createPointCloud = function (scene) {
             var coor1 = convertFromSpherical(a1, a2);
             var coor2 = convertFromSpherical(a1 + 2 * Math.cos(dir), a2 + 2 * Math.sin(dir));
             var geometry = new THREE.Geometry();
-            geometry.vertices.push(
-              new THREE.Vector3( coor1.x, coor1.y, coor1.z ),
-              new THREE.Vector3( coor2.x, coor2.y, coor2.z )
-            );
+            geometry.vertices.push(coor1, coor2);
             var line = new THREE.Line( geometry, material );
 
             group.add(line);

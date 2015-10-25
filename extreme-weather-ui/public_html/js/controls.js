@@ -1,4 +1,4 @@
-var initControls = function () {
+var initControls = function (EW) {
   // Disable camera control when hovering the interface inputs with the mouse
   $('.dg').hover(function() {
     EW.cameraControl.enabled = false;

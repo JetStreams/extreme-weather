@@ -1,12 +1,6 @@
 @import "dot-luv/jquery-ui.min.css";
 @import "dot-luv/theme.css";
 
-body {
-    /* set margin to 0 and overflow to hidden, to go fullscreen */
-    margin: 0;
-    overflow: hidden;
-}
-
 .ctrl {
     color: #fff;
     position: absolute;

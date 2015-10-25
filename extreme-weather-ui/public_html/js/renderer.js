@@ -93,8 +93,9 @@ function initRenderer() {
 
     //==============================================================
 
-    EW.meshPoints = createPointCloud(scene);
-
+    createPointCloud(scene, function(mesh) {
+      EW.meshPoints = mesh;
+    });
 
     //==============================================================
     var addStatsObject = function () {
@@ -146,7 +147,9 @@ function initRenderer() {
         var rotSpeed = control.rotationSpeed * EW.rotationMultiplier;
 
         EW.meshEarth.rotation.y += rotSpeed;
-        EW.meshPoints.rotation.y += rotSpeed;
+        if(EW.meshPoints) {
+          EW.meshPoints.rotation.y += rotSpeed;
+        }
 
         EW.renderer.render(scene, EW.camera);
 

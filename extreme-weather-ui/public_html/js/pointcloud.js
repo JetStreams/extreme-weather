@@ -1,4 +1,4 @@
-var createPointCloud = function (scene) {
+var createPointCloud= function (scene, callback) {
     //the group to add points
     var group = new THREE.Group();
     group.name = 'points';
@@ -41,8 +41,72 @@ var createPointCloud = function (scene) {
             var mesh = new THREE.Mesh( geometry, material );
 
             group.add(mesh);
+            callback(group);
         }
     });
 
-    return group;
+};
+
+// Attempt to use animated particles to visualize wind
+// Based on https://jsfiddle.net/8mrH7/195/
+var createPointCloudNew = function (scene, callback) {
+
+    var cloud;
+
+    var convertFromSpherical = function (a1, a2) {
+        var radius = 15 + 1.2; //radius of our earth model is 15
+
+        var phi = (90 - a2) * (Math.PI / 180);
+        var theta = (a1 + 180) * (Math.PI / 180);
+
+        var x = -radius * Math.sin(phi) * Math.cos(theta);
+        var z = radius * Math.sin(phi) * Math.sin(theta);
+        var y = radius * Math.cos(phi);
+
+        return new THREE.Vector3(x, y, z);
+    };
+
+    $.getJSON("res/data/sample_082010.json", function (data) {
+
+      var geometry = new THREE.BufferGeometry();
+
+      var numVertices = data.length;
+      var alphas = new Float32Array( numVertices * 1 ); // 1 values per vertex
+
+      for( var i = 0; i < numVertices; i++ ) {
+        alphas[i] = Math.random();
+      }
+      alphas.needUpdate = true;
+
+      geometry.addAttribute( 'alpha', new THREE.BufferAttribute( alphas, 1 ) );
+
+      var uniforms = {
+        color: { type: "c", value: new THREE.Color( 0xFFFFFF ) },
+      };
+
+      var material = new THREE.ShaderMaterial({ 
+        uniforms:       uniforms,
+        vertexShader:   document.getElementById( 'vertexshader' ).textContent,
+        fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+        transparent:    true
+      });
+
+      for (var i in data) {
+        var c = data[i];
+        var a1 = c[0]; // sample latitude and longitude
+        var a2 = c[1];
+        var dir1 = c[2]; // wind direction
+        var dir2 = c[2] - Math.PI / 2;
+        var dir3 = c[2] + Math.PI / 2;
+        var mag = (c[3] - 15) / 7; // wind magnitude
+
+        // create triangle
+        var c1 = convertFromSpherical(a1, a2);
+        geometry.vertices.push(c1); 
+      }
+
+      cloud = new THREE.Points( geometry, material );
+      scene.add(cloud);
+      callback(cloud);
+    });
 };

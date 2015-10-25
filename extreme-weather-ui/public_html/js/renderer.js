@@ -4,6 +4,7 @@ var EW = {
   cameraId: 0,
   meshEarth: null,
   meshPoints: null,
+  meshStars: null,
   renderer: null,
   rotationEnabled: true,
   rotationMultiplier: 1
@@ -88,16 +89,12 @@ function initRenderer() {
     //==============================================================
 
     EW.meshEarth = createGlobe(scene);
+    EW.meshStars = createStars(scene);
 
     //==============================================================
 
     EW.meshPoints = createPointCloud(scene);
 
-    //==============================================================
-
-    var renderPass = new THREE.RenderPass(scene, EW.camera);
-    renderPass.clear = false;
-    composer = createComposer(EW.renderer, renderPass);
 
     //==============================================================
     var addStatsObject = function () {
@@ -151,11 +148,7 @@ function initRenderer() {
         EW.meshEarth.rotation.y += rotSpeed;
         EW.meshPoints.rotation.y += rotSpeed;
 
-
-        // and render the scene, renderer shouldn't autoclear, we let the composer steps do that themselves
-        // rendering is now done through the composer, which executes the render steps
-        EW.renderer.autoClear = false;
-        composer.render();
+        EW.renderer.render(scene, EW.camera);
 
         requestAnimationFrame(render);
         TWEEN.update(time);

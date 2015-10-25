@@ -111,7 +111,7 @@ function initRenderer() {
     var addControlGui = function (controlObject) {
         var gui = new dat.GUI();
         gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
-        gui.add(controlObject, 'days', 229, 243).step(1).onChange(function (newValue) {
+        gui.add(controlObject, 'days', 229, 243).step(1).onFinishChange(function (newValue) {
             refreshDate(newValue);
             populatePointCloud(EW.meshPoints, EW.jsonData, newValue);
         });

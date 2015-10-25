@@ -116,6 +116,7 @@ function initRenderer() {
         var gui = new dat.GUI();
         gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
         gui.add(controlObject, 'days', -14, 14);
+        gui.add(controlObject, 'nextCamera');
         gui.add(controlObject, 'toggleScreen');
     };
 
@@ -127,6 +128,9 @@ function initRenderer() {
             fullScreen = !fullScreen;
             $(document).fullScreen(fullScreen);
         };
+        this.nextCamera = function() {
+          EW.switchCamera();
+        }
     };
     addControlGui(control);
 

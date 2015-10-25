@@ -7,7 +7,8 @@ var EW = {
   meshStars: null,
   renderer: null,
   rotationEnabled: true,
-  rotationMultiplier: 1
+  rotationMultiplier: 1,
+  jsonData: null
 };
 
 EW.webglAvailable = function () {
@@ -102,9 +103,12 @@ function initRenderer() {
 
     //==============================================================
 
-    createPointCloud(scene, function(mesh) {
-      EW.meshPoints = mesh;
+    $.getJSON("res/data/2010_JJA_wind_min_2weeks.json", function (data) {
+      EW.jsonData = data;
+
+      EW.meshPoints = createPointCloud(scene, EW.jsonData);
     });
+
 
     //==============================================================
     var addStatsObject = function () {
@@ -122,8 +126,9 @@ function initRenderer() {
     var addControlGui = function (controlObject) {
         var gui = new dat.GUI();
         gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
-        gui.add(controlObject, 'days', -14, 14).step(1).onChange(function (newValue) {
+        gui.add(controlObject, 'days', 229, 243).step(1).onChange(function (newValue) {
             refreshDate(newValue);
+            populatePointCloud(EW.meshPoints, EW.jsonData, newValue);
         });
         gui.add(controlObject, 'nextCamera');
         gui.add(controlObject, 'toggleScreen');

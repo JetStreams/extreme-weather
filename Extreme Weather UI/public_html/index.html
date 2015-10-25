@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Extrem Weather</title>
+        <title>Extreme Weather</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js"></script>
@@ -14,23 +14,44 @@
         <script src="js/libs/CopyShader.js"></script>
         <script src="js/libs/ShaderPass.js"></script>
         <script src="js/libs/MaskPass.js"></script>
+        <script src="js/libs/jquery.fullscreen-min.js"></script>
         <script src="js/EarthScene.js"></script>
         <script src="js/composer.js"></script>
         <script src="js/pointcloud.js"></script>
         <script src="js/renderer.js"></script>
         <script src="js/controls.js"></script>
+        <style>
+            body {
+                /* set margin to 0 and overflow to hidden, to go fullscreen */
+                margin: 0;
+                overflow: hidden;
+            }
+        </style>
     </head>
     <body>
+
         <div id="container"></div>
 
+        <div class="info">
+            Date: 25.10.2015
+        </div>
+
+        <div class="sign">
+            <img id="warning" src="res/textures/hazard-sign.png" alt="warning"
+                 width="42" height="38"
+                 title="Resonance Warning"/>
+        </div>
+
+
         <iframe id="player"
-                src="https://www.youtube.com/v/03rALNASWJw?enablejsapi=1;autoplay=1"
+                src="https://www.youtube.com/v/FyJ0_Ds7F0s?enablejsapi=1;start=60;autoplay=1"
                 style="display: none"></iframe>
 
         <script type="text/javascript">
             $(function () {
                 initRenderer();
                 initControls();
+                //$('.info').hide();
             });
         </script>
 

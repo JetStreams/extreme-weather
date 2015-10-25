@@ -8,6 +8,7 @@ var EW = {
   rotationEnabled: true,
   rotationMultiplier: 1
 };
+
 EW.webglAvailable = function() {
   try {
     var canvas = document.createElement( 'canvas' );
@@ -19,11 +20,13 @@ EW.webglAvailable = function() {
     return false;
   }
 };
+
 EW.onResize = function() {
   EW.camera.aspect = window.innerWidth / window.innerHeight;
   EW.camera.updateProjectionMatrix();
   EW.renderer.setSize(window.innerWidth, window.innerHeight);
-}
+};
+
 EW.switchCamera = function() {
   var pos = [
     { x: 15, y: 35, z:0 },
@@ -36,12 +39,11 @@ EW.switchCamera = function() {
     .to(pos[EW.cameraId++ % pos.length], 5000)
     .easing(TWEEN.Easing.Sinusoidal.InOut)
     .start(); 
-} 
+} ;
 
 function initRenderer() {
-
+    var fullScreen = false;
     var scene;
-    var camera;
     var control;
     var stats;
 
@@ -113,13 +115,18 @@ function initRenderer() {
     var addControlGui = function (controlObject) {
         var gui = new dat.GUI();
         gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
-        gui.add(controlObject, 'time', -0.1, 0.1);
+        gui.add(controlObject, 'days', -14, 14);
+        gui.add(controlObject, 'toggleScreen');
     };
 
     // setup the control object for the control gui
     control = new function () {
         this.rotationSpeed = 0.001;
-        this.time = 0;
+        this.days = 0;
+        this.toggleScreen = function() {
+            fullScreen = !fullScreen;
+            $(document).fullScreen(fullScreen);
+        };
     };
     addControlGui(control);
 

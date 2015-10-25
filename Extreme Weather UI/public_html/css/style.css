@@ -1,9 +1,25 @@
-html, body {
-    /* set margin to 0 and overflow to hidden, to go fullscreen */
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+@import "dot-luv/jquery-ui.min.css";
+@import "dot-luv/theme.css";
+
+.info {
+    color: rgb(95,158,160);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    text-align: left;
+    z-index: 100;
+    display: inline;
+    font-family: sans-serif;
 }
-canvas {
-  display: block;
+
+.sign {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    text-align: left;
+    z-index: 100;
+    display: inline;
+    border-radius: 5px;
+    background: rgba(95,158,160,0.3);
+    padding: 3px;
 }

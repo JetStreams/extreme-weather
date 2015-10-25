@@ -29,12 +29,6 @@ var Renderer = (function () {
                 .start();
     };
 
-    var refreshDate = function (increment) {
-        var date = new Date(2010, 0, 0);
-        date.setDate(date.getDate() + increment);
-        $('#date').text($.format.date(date, 'dd MMM yyyy'));
-    };
-
     function initRenderer() {
         var fullScreen = false;
         var scene;
@@ -104,32 +98,6 @@ var Renderer = (function () {
         };
 
         //==============================================================
-        var addControlGui = function (controlObject) {
-            var gui = new dat.GUI();
-            gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
-            gui.add(controlObject, 'days', 229, 243).step(1).onFinishChange(function (newValue) {
-                refreshDate(newValue);
-                populatePointCloud(EW.meshPoints, EW.jsonData, newValue);
-            });
-            gui.add(controlObject, 'nextCamera');
-            gui.add(controlObject, 'toggleScreen');
-        };
-
-        // setup the control object for the control gui
-        control = new function () {
-            this.rotationSpeed = 0.001;
-            this.days = 229;
-            this.toggleScreen = function () {
-                fullScreen = !fullScreen;
-                $(document).fullScreen(fullScreen);
-            };
-            this.nextCamera = function () {
-                EW.switchCamera();
-            }
-        };
-        addControlGui(control);
-
-        //==============================================================
         // draw!
         var render = function (time) {
             stats.update();
@@ -156,7 +124,24 @@ var Renderer = (function () {
 
 
         addStatsObject();
+         //==============================================================
+        // setup the control object for the control gui
+        
+        control = new function () {
+            this.rotationSpeed = 0.001;
+            this.days = 229;
+            this.toggleScreen = function () {
+                fullScreen = !fullScreen;
+                $(document).fullScreen(fullScreen);
+            };
+            this.nextCamera = function () {
+                EW.switchCamera();
+            }
+        };
+        addControlGui(control, EW);
         initControls(EW);
+        //================================================================
+        
         render();
         window.addEventListener('resize', EW.onResize, false);
     }
@@ -170,4 +155,3 @@ var Renderer = (function () {
     };
 
 })();
-

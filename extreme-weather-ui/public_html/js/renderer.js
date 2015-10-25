@@ -11,18 +11,6 @@ var EW = {
   jsonData: null
 };
 
-EW.webglAvailable = function () {
-    try {
-        var canvas = document.createElement('canvas');
-        return !!(window.WebGLRenderingContext && (
-                canvas.getContext('webgl') ||
-                canvas.getContext('experimental-webgl'))
-                );
-    } catch (e) {
-        return false;
-    }
-};
-
 EW.onResize = function () {
     EW.camera.aspect = window.innerWidth / window.innerHeight;
     EW.camera.updateProjectionMatrix();
@@ -54,9 +42,6 @@ function initRenderer() {
     var scene;
     var control;
     var stats;
-
-    // background stuff
-    var composer;
 
     // set some camera attributes
     var VIEW_ANGLE = 45,

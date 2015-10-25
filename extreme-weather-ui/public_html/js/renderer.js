@@ -124,6 +124,7 @@ function initRenderer() {
         gui.add(controlObject, 'days', -14, 14).step(1).onChange(function (newValue) {
             refreshDate(newValue);
         });
+        gui.add(controlObject, 'nextCamera');
         gui.add(controlObject, 'toggleScreen');
     };
 

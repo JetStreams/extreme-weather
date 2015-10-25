@@ -10,37 +10,43 @@ var EW = {
   rotationMultiplier: 1
 };
 
-EW.webglAvailable = function() {
-  try {
-    var canvas = document.createElement( 'canvas' );
-    return !!( window.WebGLRenderingContext && (
-      canvas.getContext( 'webgl' ) ||
-        canvas.getContext( 'experimental-webgl' ) )
-             );
-  } catch ( e ) {
-    return false;
-  }
+EW.webglAvailable = function () {
+    try {
+        var canvas = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && (
+                canvas.getContext('webgl') ||
+                canvas.getContext('experimental-webgl'))
+                );
+    } catch (e) {
+        return false;
+    }
 };
 
-EW.onResize = function() {
-  EW.camera.aspect = window.innerWidth / window.innerHeight;
-  EW.camera.updateProjectionMatrix();
-  EW.renderer.setSize(window.innerWidth, window.innerHeight);
+EW.onResize = function () {
+    EW.camera.aspect = window.innerWidth / window.innerHeight;
+    EW.camera.updateProjectionMatrix();
+    EW.renderer.setSize(window.innerWidth, window.innerHeight);
 };
 
-EW.switchCamera = function() {
-  var pos = [
-    { x: 15, y: 35, z:0 },
-    { x: 15, y: 17, z:0 },
-    { x: 35, y: 35, z:0 }
-  ];
+EW.switchCamera = function () {
+    var pos = [
+        {x: 15, y: 35, z: 0},
+        {x: 15, y: 17, z: 0},
+        {x: 35, y: 35, z: 0}
+    ];
 
-  new TWEEN
-    .Tween(EW.camera.position)
-    .to(pos[EW.cameraId++ % pos.length], 5000)
-    .easing(TWEEN.Easing.Sinusoidal.InOut)
-    .start(); 
-} ;
+    new TWEEN
+            .Tween(EW.camera.position)
+            .to(pos[EW.cameraId++ % pos.length], 5000)
+            .easing(TWEEN.Easing.Sinusoidal.InOut)
+            .start();
+};
+
+var refreshDate = function (increment) {
+    var date = new Date();
+    date.setDate(date.getDate() + increment);
+    $('#date').text($.format.date(date, 'dd MMM yyyy'));
+};
 
 function initRenderer() {
     var fullScreen = false;
@@ -57,17 +63,20 @@ function initRenderer() {
             NEAR = 0.1,
             FAR = 10000;
 
+    // create a renderer, camera and a scene
+    if (!Detector.webgl) {
+        Detector.addGetWebGLMessage();
+        EW.renderer = new THREE.CanvasRenderer();
+    } else {
+        EW.renderer = new THREE.WebGLRenderer();
+        EW.renderer.shadowMap.enabled = true;
+    }
+
     scene = new THREE.Scene();
 
-    // create a renderer, camera and a scene
-    if ( EW.webglAvailable() ) {
-      EW.renderer = new THREE.WebGLRenderer();
-    } else {
-      EW.renderer = new THREE.CanvasRenderer();
-    }
     EW.renderer.setSize(window.innerWidth, window.innerHeight);
     EW.renderer.setClearColor(0x000000, 1.0);
-    EW.renderer.shadowMap.enabled = true;
+    
 
     // attach the render-supplied DOM element
     // get the DOM element to attach to
@@ -75,8 +84,8 @@ function initRenderer() {
     $('#container').append(EW.renderer.domElement);
 
     EW.camera = new THREE.PerspectiveCamera(
-                    VIEW_ANGLE,
-                    ASPECT, NEAR, FAR);
+            VIEW_ANGLE,
+            ASPECT, NEAR, FAR);
     EW.camera.position.x = 35;
     EW.camera.position.y = 35;
     EW.camera.position.z = 0;
@@ -113,7 +122,9 @@ function initRenderer() {
     var addControlGui = function (controlObject) {
         var gui = new dat.GUI();
         gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
-        gui.add(controlObject, 'days', -14, 14);
+        gui.add(controlObject, 'days', -14, 14).step(1).onChange(function (newValue) {
+            refreshDate(newValue);
+        });
         gui.add(controlObject, 'nextCamera');
         gui.add(controlObject, 'toggleScreen');
     };
@@ -122,12 +133,12 @@ function initRenderer() {
     control = new function () {
         this.rotationSpeed = 0.001;
         this.days = 0;
-        this.toggleScreen = function() {
+        this.toggleScreen = function () {
             fullScreen = !fullScreen;
             $(document).fullScreen(fullScreen);
         };
-        this.nextCamera = function() {
-          EW.switchCamera();
+        this.nextCamera = function () {
+            EW.switchCamera();
         }
     };
     addControlGui(control);
@@ -139,10 +150,10 @@ function initRenderer() {
         EW.cameraControl.update();
 
         // Slow down or speed up rotation
-        if(EW.rotationEnabled) {
-          EW.rotationMultiplier = Math.min(EW.rotationMultiplier + 0.05, 1);          
+        if (EW.rotationEnabled) {
+            EW.rotationMultiplier = Math.min(EW.rotationMultiplier + 0.05, 1);
         } else {
-          EW.rotationMultiplier = Math.max(EW.rotationMultiplier - 0.05, 0);
+            EW.rotationMultiplier = Math.max(EW.rotationMultiplier - 0.05, 0);
         }
         var rotSpeed = control.rotationSpeed * EW.rotationMultiplier;
 

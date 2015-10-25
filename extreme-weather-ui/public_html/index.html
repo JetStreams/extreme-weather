@@ -6,16 +6,20 @@
         <link rel="shortcut icon" href="res/favicon-16x16.png" type="image/x-icon">
         <link rel="icon" href="res/favicon-16x16.png" type="image/x-icon">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-dateFormat/1.0/jquery.dateFormat.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5.1/dat.gui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r14/Stats.min.js"></script>
-        <script src="js/libs/tween.js"></script>
-        <script src="js/libs/OrbitControls.js"></script>
-        <script src="js/libs/EffectComposer.js"></script>
-        <script src="js/libs/RenderPass.js"></script>
-        <script src="js/libs/CopyShader.js"></script>
-        <script src="js/libs/ShaderPass.js"></script>
-        <script src="js/libs/MaskPass.js"></script>
+        <script src="js/libs/tween.min.js"></script>
+        <script src="js/libs/Detector.min.js"></script>
+        <script src="js/libs/Projector.min.js"></script>
+        <script src="js/libs/CanvasRenderer.min.js"></script>
+        <script src="js/libs/OrbitControls.min.js"></script>
+        <script src="js/libs/EffectComposer.min.js"></script>
+        <script src="js/libs/RenderPass.min.js"></script>
+        <script src="js/libs/CopyShader.min.js"></script>
+        <script src="js/libs/ShaderPass.min.js"></script>
+        <script src="js/libs/MaskPass.min.js"></script>
         <script src="js/libs/jquery.fullscreen-min.js"></script>
         <script src="js/EarthScene.js"></script>
         <script src="js/StarsScene.js"></script>
@@ -56,7 +60,7 @@
         <div id="container"></div>
 
         <div class="info">
-            Date: 25.10.2015
+            <span id="date"></span>
         </div>
 
         <div class="sign">
@@ -74,6 +78,7 @@
             $(function () {
                 initRenderer();
                 initControls();
+                refreshDate(0);
                 //$('.info').hide();
             });
         </script>

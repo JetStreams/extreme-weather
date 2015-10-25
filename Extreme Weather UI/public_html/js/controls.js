@@ -19,8 +19,4 @@ var initControls = function () {
         break;
     }
   });
-  
-  $('#maximize').click(function(ev){
-      $(document).fullScreen(true)
-  });
 };

@@ -62,17 +62,20 @@ function initRenderer() {
             NEAR = 0.1,
             FAR = 10000;
 
+    // create a renderer, camera and a scene
+    if (!Detector.webgl) {
+        Detector.addGetWebGLMessage();
+        EW.renderer = new THREE.CanvasRenderer();
+    } else {
+        EW.renderer = new THREE.WebGLRenderer();
+        EW.renderer.shadowMap.enabled = true;
+    }
+
     scene = new THREE.Scene();
 
-    // create a renderer, camera and a scene
-    if (EW.webglAvailable()) {
-        EW.renderer = new THREE.WebGLRenderer();
-    } else {
-        EW.renderer = new THREE.CanvasRenderer();
-    }
     EW.renderer.setSize(window.innerWidth, window.innerHeight);
     EW.renderer.setClearColor(0x000000, 1.0);
-    EW.renderer.shadowMap.enabled = true;
+    
 
     // attach the render-supplied DOM element
     // get the DOM element to attach to
@@ -136,8 +139,8 @@ function initRenderer() {
             fullScreen = !fullScreen;
             $(document).fullScreen(fullScreen);
         };
-        this.nextCamera = function() {
-          EW.switchCamera();
+        this.nextCamera = function () {
+            EW.switchCamera();
         }
     };
     addControlGui(control);

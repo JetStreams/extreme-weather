@@ -1,18 +1,24 @@
 @import "dot-luv/jquery-ui.min.css";
 @import "dot-luv/theme.css";
 
-.ctrl {
-    color: #fff;
+.info {
+    color: rgb(95,158,160);
     position: absolute;
     top: 10px;
     left: 10px;
     text-align: left;
     z-index: 100;
     display: inline;
-    
+    font-family: sans-serif;
 }
 
-.ctrl .info {
+.sign {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    text-align: left;
+    z-index: 100;
+    display: inline;
     border-radius: 5px;
     background: rgba(95,158,160,0.3);
     padding: 3px;

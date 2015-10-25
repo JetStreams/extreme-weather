@@ -135,6 +135,9 @@ function initRenderer() {
             fullScreen = !fullScreen;
             $(document).fullScreen(fullScreen);
         };
+        this.nextCamera = function() {
+          EW.switchCamera();
+        }
     };
     addControlGui(control);
 

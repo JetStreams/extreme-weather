@@ -1,14 +1,15 @@
 var EW = {
-  camera: null,
-  cameraControl: null,
-  cameraId: 0,
-  meshEarth: null,
-  meshPoints: null,
-  meshStars: null,
-  renderer: null,
-  rotationEnabled: true,
-  rotationMultiplier: 1,
-  jsonData: null
+    camera: null,
+    cameraControl: null,
+    cameraId: 0,
+    meshEarth: null,
+    meshPoints: null,
+    meshStars: null,
+    renderer: null,
+    rotationEnabled: true,
+    rotationMultiplier: 1,
+    jsonData: null,
+    positions: null
 };
 
 EW.onResize = function () {
@@ -18,11 +19,7 @@ EW.onResize = function () {
 };
 
 EW.switchCamera = function () {
-    var pos = [
-        {x: 15, y: 35, z: 0},
-        {x: 15, y: 17, z: 0},
-        {x: 35, y: 35, z: 0}
-    ];
+    var pos = EW.positions;
 
     new TWEEN
             .Tween(EW.camera.position)
@@ -62,7 +59,7 @@ function initRenderer() {
 
     EW.renderer.setSize(window.innerWidth, window.innerHeight);
     EW.renderer.setClearColor(0x000000, 1.0);
-    
+
 
     // attach the render-supplied DOM element
     // get the DOM element to attach to
@@ -89,11 +86,23 @@ function initRenderer() {
     //==============================================================
 
     $.getJSON("res/data/2010_JJA_wind_min_2weeks.json", function (data) {
-      EW.jsonData = data;
+        EW.jsonData = data;
 
-      EW.meshPoints = createPointCloud(scene, EW.jsonData);
+        EW.meshPoints = createPointCloud(scene, EW.jsonData);
     });
 
+    //============================================================
+    //read available camera positions
+    function readCameraPositions(source) {
+        var items = [];
+        $.getJSON(source, function (data) {
+            $.each(data, function (key, val) {
+                items.push(val);
+            });
+        });
+        return items;
+    };
+    EW.positions = readCameraPositions("res/data/camera_positions.json");
 
     //==============================================================
     var addStatsObject = function () {
@@ -148,8 +157,8 @@ function initRenderer() {
         var rotSpeed = control.rotationSpeed * EW.rotationMultiplier;
 
         EW.meshEarth.rotation.y += rotSpeed;
-        if(EW.meshPoints) {
-          EW.meshPoints.rotation.y += rotSpeed;
+        if (EW.meshPoints) {
+            EW.meshPoints.rotation.y += rotSpeed;
         }
 
         EW.renderer.render(scene, EW.camera);

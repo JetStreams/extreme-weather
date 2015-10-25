@@ -32,6 +32,27 @@
     </head>
     <body>
 
+      <!-- Shader for Point rendering in three.js -->
+      <script type="x-shader/x-vertex" id="vertexshader">
+        attribute float alpha;
+        varying float vAlpha;
+        void main() {
+          vAlpha = alpha;
+          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+          gl_PointSize = 8.0;
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      </script>
+
+      <!-- Shader for Point rendering in three.js -->
+      <script type="x-shader/x-fragment" id="fragmentshader">
+        uniform vec3 color;
+        varying float vAlpha;
+        void main() {
+          gl_FragColor = vec4( color, vAlpha );
+        }
+      </script>
+
         <div id="container"></div>
 
         <div class="info">

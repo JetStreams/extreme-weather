@@ -85,25 +85,11 @@ function initRenderer() {
 
     //==============================================================
 
-    $.getJSON("res/data/2010_JJA_wind_min_2weeks.json", function (data) {
-        EW.jsonData = data;
-
-        EW.meshPoints = createPointCloud(scene, EW.jsonData);
-    });
+    buildCloudPoints("res/data/2010_JJA_wind_min_2weeks.json", scene, EW);
 
     //============================================================
-    //read available camera positions
-    function readCameraPositions(source) {
-        var items = [];
-        $.getJSON(source, function (data) {
-            $.each(data, function (key, val) {
-                items.push(val);
-            });
-        });
-        return items;
-    };
-    EW.positions = readCameraPositions("res/data/camera_positions.json");
-
+    
+    readCameraPositions("res/data/camera_positions.json", EW);
     //==============================================================
     var addStatsObject = function () {
         stats = new Stats();

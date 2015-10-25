@@ -32,7 +32,7 @@ EW.switchCamera = function () {
 };
 
 var refreshDate = function (increment) {
-    var date = new Date();
+    var date = new Date(2010, 0, 0);
     date.setDate(date.getDate() + increment);
     $('#date').text($.format.date(date, 'dd MMM yyyy'));
 };
@@ -122,7 +122,7 @@ function initRenderer() {
     // setup the control object for the control gui
     control = new function () {
         this.rotationSpeed = 0.001;
-        this.days = 0;
+        this.days = 229;
         this.toggleScreen = function () {
             fullScreen = !fullScreen;
             $(document).fullScreen(fullScreen);

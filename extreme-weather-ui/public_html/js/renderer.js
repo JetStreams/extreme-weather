@@ -150,7 +150,7 @@ var Renderer = (function () {
     return {
         run: function () {
             initRenderer();
-            refreshDate(229);
+            DateInfo.refresh(229);
         }
     };
 

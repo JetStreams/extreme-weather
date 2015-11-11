@@ -21,17 +21,11 @@ var initControls = function (EW) {
     });
 };
 
-var refreshDate = function (increment) {
-    var date = new Date(2010, 0, 0);
-    date.setDate(date.getDate() + increment);
-    $('#date').text($.format.date(date, 'dd MMM yyyy'));
-};
-
 var addControlGui = function (controlObject, EW) {
     var gui = new dat.GUI();
     gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
     gui.add(controlObject, 'days', 229, 243).step(1).onFinishChange(function (newValue) {
-        refreshDate(newValue);
+        DateInfo.refresh(newValue);
         populatePointCloud(EW.meshPoints, EW.jsonData, newValue);
     });
     gui.add(controlObject, 'nextCamera');

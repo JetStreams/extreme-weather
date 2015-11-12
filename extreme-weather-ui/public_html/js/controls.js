@@ -30,5 +30,5 @@ var addControlGui = function (controlObject, EW) {
         populatePointCloud(EW.meshPoints, EW.jsonData, newValue);
     });
     gui.add(controlObject, 'nextCamera');
-    gui.add(controlObject, 'flyCamera');
+    gui.add(controlObject, 'cameraFly');
 };

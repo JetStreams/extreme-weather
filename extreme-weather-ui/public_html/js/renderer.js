@@ -32,7 +32,7 @@ var Renderer = (function () {
                 .start();
     };
 
-    EW.flyCamera = function () {
+    EW.cameraFly = function () {
         if (!block) {
             block = true;
             var pos = EW.positions;
@@ -171,8 +171,8 @@ var Renderer = (function () {
             this.nextCamera = function () {
                 EW.switchCamera();
             }
-            this.flyCamera = function () {
-                EW.flyCamera();
+            this.cameraFly = function () {
+                EW.cameraFly();
             }
         };
         addControlGui(control, EW);

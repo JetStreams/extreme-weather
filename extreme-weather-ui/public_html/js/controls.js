@@ -23,11 +23,12 @@ var initControls = function (EW) {
 
 var addControlGui = function (controlObject, EW) {
     var gui = new dat.GUI();
+    gui.add(controlObject, 'toggleScreen');
     gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
     gui.add(controlObject, 'days', 229, 243).step(1).onFinishChange(function (newValue) {
         DateInfo.refresh(newValue);
         populatePointCloud(EW.meshPoints, EW.jsonData, newValue);
     });
     gui.add(controlObject, 'nextCamera');
-    gui.add(controlObject, 'toggleScreen');
+    gui.add(controlObject, 'flyCamera');
 };

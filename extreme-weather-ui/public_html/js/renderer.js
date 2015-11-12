@@ -1,4 +1,6 @@
 var Renderer = (function () {
+    var block = false;
+
     var EW = {
         camera: null,
         cameraControl: null,
@@ -29,6 +31,37 @@ var Renderer = (function () {
                 .easing(TWEEN.Easing.Sinusoidal.InOut)
                 .start();
     };
+
+    EW.flyCamera = function () {
+        if (!block) {
+            block = true;
+            var pos = EW.positions;
+            var first;
+            var previous;
+            for (var i = 0; i < pos.length; i++) {
+                var t = new TWEEN
+                        .Tween(EW.camera.position)
+                        .to(pos[i], 5000)
+                        .easing(TWEEN.Easing.Sinusoidal.InOut);
+                if (typeof first === 'undefined') {
+                    first = t;
+                } else if (typeof previous === 'undefined') {
+                    previous = t;
+                    first.chain(previous);
+                } else {
+                    previous.chain(t);
+                    previous = t;
+                }
+            }
+            
+            previous.onComplete(function(){
+               block = false; 
+            });
+
+            first.start();
+        }
+    };
+
 
     function initRenderer() {
         var fullScreen = false;
@@ -125,9 +158,9 @@ var Renderer = (function () {
 
 
         addStatsObject();
-         //==============================================================
+        //==============================================================
         // setup the control object for the control gui
-        
+
         control = new function () {
             this.rotationSpeed = 0.001;
             this.days = 229;
@@ -138,11 +171,14 @@ var Renderer = (function () {
             this.nextCamera = function () {
                 EW.switchCamera();
             }
+            this.flyCamera = function () {
+                EW.flyCamera();
+            }
         };
         addControlGui(control, EW);
         initControls(EW);
         //================================================================
-        
+
         render();
         window.addEventListener('resize', EW.onResize, false);
     }

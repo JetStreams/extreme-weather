@@ -21,10 +21,11 @@ var Renderer = (function () {
 
     EW.switchCamera = function () {
         var pos = EW.positions;
+        var index = EW.cameraId++ % pos.length;
 
         new TWEEN
                 .Tween(EW.camera.position)
-                .to(pos[EW.cameraId++ % pos.length], 5000)
+                .to(pos[index], 5000)
                 .easing(TWEEN.Easing.Sinusoidal.InOut)
                 .start();
     };

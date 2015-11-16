@@ -5,6 +5,35 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="shortcut icon" href="res/favicon-16x16.png" type="image/x-icon">
         <link rel="icon" href="res/favicon-16x16.png" type="image/x-icon">
+        <link type="text/css" rel="stylesheet" href="css/style.css"/>
+
+        <style>
+            body {
+                /* set margin to 0 and overflow to hidden, to go fullscreen */
+                margin: 0;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <div class="info">
+            <span id="date"></span>
+        </div>
+
+        <div class="sign">
+            <img id="warning" src="res/textures/hazard-sign.png" alt="warning"
+                 width="42" height="38"
+                 title="Resonance Warning"/>
+        </div>
+
+
+        <iframe id="player"
+                src="https://www.youtube.com/v/FyJ0_Ds7F0s?enablejsapi=1;start=60;autoplay=1"
+                style="display: none"></iframe>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-dateFormat/1.0/jquery.dateFormat.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js"></script>
@@ -28,53 +57,28 @@
         <script src="js/renderer.js"></script>
         <script src="js/controls.js"></script>
         <script src="js/date.js"></script>
-        <style>
-            body {
-                /* set margin to 0 and overflow to hidden, to go fullscreen */
-                margin: 0;
-                overflow: hidden;
+
+        <!-- Shader for Point rendering in three.js -->
+        <script type="x-shader/x-vertex" id="vertexshader">
+            attribute float alpha;
+            varying float vAlpha;
+            void main() {
+            vAlpha = alpha;
+            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+            gl_PointSize = 8.0;
+            gl_Position = projectionMatrix * mvPosition;
             }
-        </style>
-    </head>
-    <body>
+        </script>
 
-      <!-- Shader for Point rendering in three.js -->
-      <script type="x-shader/x-vertex" id="vertexshader">
-        attribute float alpha;
-        varying float vAlpha;
-        void main() {
-          vAlpha = alpha;
-          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-          gl_PointSize = 8.0;
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      </script>
+        <!-- Shader for Point rendering in three.js -->
+        <script type="x-shader/x-fragment" id="fragmentshader">
+            uniform vec3 color;
+            varying float vAlpha;
+            void main() {
+            gl_FragColor = vec4( color, vAlpha );
+            }
+        </script>
 
-      <!-- Shader for Point rendering in three.js -->
-      <script type="x-shader/x-fragment" id="fragmentshader">
-        uniform vec3 color;
-        varying float vAlpha;
-        void main() {
-          gl_FragColor = vec4( color, vAlpha );
-        }
-      </script>
-
-        <div id="container"></div>
-
-        <div class="info">
-            <span id="date"></span>
-        </div>
-
-        <div class="sign">
-            <img id="warning" src="res/textures/hazard-sign.png" alt="warning"
-                 width="42" height="38"
-                 title="Resonance Warning"/>
-        </div>
-
-
-        <iframe id="player"
-                src="https://www.youtube.com/v/FyJ0_Ds7F0s?enablejsapi=1;start=60;autoplay=1"
-                style="display: none"></iframe>
 
         <script type="text/javascript">
             $(function () {
@@ -83,6 +87,7 @@
             });
         </script>
 
-        <link type="text/css" rel="stylesheet" href="css/style.css"/>
+
+
     </body>
 </html>

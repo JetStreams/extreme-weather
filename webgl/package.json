@@ -1,9 +1,13 @@
 {
   "name": "extreme-weather-ui",
   "version": "1.0.0",
+  "license": "GPL",
   "main"    : "public_html/main.js",
   "scripts": {
     "electron run": "electron .",
     "server": "ws -p 80 -d public_html/ -c"
+  },
+  "dependencies": {
+    "bower": "^1.7.7"
   }
 }

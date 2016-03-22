@@ -1,0 +1,25 @@
+{
+  "name": "extreme-weather-ui",
+  "description": "extreme weather warning",
+  "main": "public_html/main.js",
+  "authors": [
+    "Mario-S <spindizzy@outlook.com>",
+    "Abe Pazos <abe@hamoid.com>"
+  ],
+  "license": "GPL",
+  "keywords": [
+    "webgl",
+    "weather",
+    "jetstreams"
+  ],
+  "homepage": "https://github.com/JetStreams/extreme-weather",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
